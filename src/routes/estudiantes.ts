@@ -32,11 +32,13 @@ const estudiantes: Estudiante[] = [
 
 // obtener todos o filtrar por curso
 router.get("/", (req, res) => {
-  const curso = req.query.curso;
+  const curso = String(req.query.curso || "");
+  // #swagger.description = 'obtiene la lista de estudiantes o filtra por curso'
 
   if (curso) {
     const estudiantesFiltrados = estudiantes.filter(
-      (estudiante) => estudiante.curso === curso,
+      (estudiante) =>
+        estudiante.curso.toLowerCase().trim() === curso.toLowerCase().trim(),
     );
 
     return res.json(estudiantesFiltrados);
@@ -47,6 +49,7 @@ router.get("/", (req, res) => {
 
 // obtener un estudiante por id
 router.get("/:id", (req, res) => {
+  // #swagger.description = 'obtiene un estudiante por su id'
   const id = Number(req.params.id);
 
   const estudiante = estudiantes.find((estudiante) => estudiante.id === id);
@@ -62,6 +65,7 @@ router.get("/:id", (req, res) => {
 
 // crear un estudiante
 router.post("/", (req, res) => {
+  // #swagger.description = 'crea un nuevo estudiante'
   const { nombre, correo, curso } = req.body;
 
   if (!correo) {
@@ -84,9 +88,8 @@ router.post("/", (req, res) => {
 
 // actualizar un estudiante
 router.put("/:id", (req, res) => {
+  // #swagger.description = 'actualiza un estudiante existente'
   const id = Number(req.params.id);
-
-  const { nombre, correo, curso } = req.body;
 
   const estudiante = estudiantes.find((estudiante) => estudiante.id === id);
 
@@ -96,15 +99,25 @@ router.put("/:id", (req, res) => {
     });
   }
 
-  estudiante.nombre = nombre;
-  estudiante.correo = correo;
-  estudiante.curso = curso;
+  const { nombre, correo, curso } = req.body;
+
+  if (nombre !== undefined) {
+    estudiante.nombre = nombre;
+  }
+
+  if (correo !== undefined) {
+    estudiante.correo = correo;
+  }
+
+  if (curso !== undefined) {
+    estudiante.curso = curso;
+  }
 
   res.json(estudiante);
 });
-
 // eliminar un estudiante
 router.delete("/:id", (req, res) => {
+  // #swagger.description = 'elimina un estudiante por su id'
   const id = Number(req.params.id);
 
   const indice = estudiantes.findIndex((estudiante) => estudiante.id === id);

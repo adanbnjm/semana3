@@ -1,13 +1,13 @@
 import express from "express";
-import estudiantesRouter from "./routes/estudiantes"; //de aqui se importan estudiantes "segun"
-import { ADDRGETNETWORKPARAMS } from "node:dns";
+import estudiantesRouter from "./routes/estudiantes";
+import swaggerUi from "swagger-ui-express";
+import swaggerOutput from "./swagger_output.json";
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
-// comprobar que el servidor está funcionando
 app.get("/api/status", (req, res) => {
   res.json({
     status: "Servidor en línea",
@@ -15,11 +15,11 @@ app.get("/api/status", (req, res) => {
   });
 });
 
-// rutas de estudiantes
 app.use("/api/estudiantes", estudiantesRouter);
+
+// Swagger
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerOutput));
 
 app.listen(PORT, () => {
   console.log(`servidor corriendo en http://localhost:${PORT}`);
 });
-
-ADDRGETNETWORKPARAMS;
