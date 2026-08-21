@@ -1,5 +1,6 @@
 import express from "express";
 import estudiantesRouter from "./routes/estudiantes"; //de aqui se importan estudiantes "segun"
+import { ADDRGETNETWORKPARAMS } from "node:dns";
 
 const app = express();
 const PORT = 3000;
@@ -20,3 +21,5 @@ app.use("/api/estudiantes", estudiantesRouter);
 app.listen(PORT, () => {
   console.log(`servidor corriendo en http://localhost:${PORT}`);
 });
+
+ADDRGETNETWORKPARAMS;
