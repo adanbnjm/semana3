@@ -32,23 +32,33 @@ const estudiantes: Estudiante[] = [
 
 // obtener todos o filtrar por curso
 router.get("/", (req, res) => {
-  const curso = String(req.query.curso || "");
+  // #swagger.tags = ['Estudiantes']
   // #swagger.description = 'obtiene la lista de estudiantes o filtra por curso'
 
-  if (curso) {
-    const estudiantesFiltrados = estudiantes.filter(
-      (estudiante) =>
-        estudiante.curso.toLowerCase().trim() === curso.toLowerCase().trim(),
-    );
+  const bootcamp = String(req.query.bootcamp || "");
 
-    return res.json(estudiantesFiltrados);
+  let resultado = estudiantes;
+
+  if (bootcamp) {
+    resultado = estudiantes.filter(
+      (estudiante) =>
+        estudiante.curso.toLowerCase().trim() === bootcamp.toLowerCase().trim(),
+    );
   }
 
-  res.json(estudiantes);
+  const respuesta = resultado.map((estudiante) => ({
+    id: estudiante.id,
+    name: estudiante.nombre,
+    email: estudiante.correo,
+    bootcamp: estudiante.curso,
+  }));
+
+  res.json(respuesta);
 });
 
 // obtener un estudiante por id
 router.get("/:id", (req, res) => {
+  // #swagger.tags = ['Estudiantes']
   // #swagger.description = 'obtiene un estudiante por su id'
   const id = Number(req.params.id);
 
@@ -65,10 +75,12 @@ router.get("/:id", (req, res) => {
 
 // crear un estudiante
 router.post("/", (req, res) => {
+  // #swagger.tags = ['Estudiantes']
   // #swagger.description = 'crea un nuevo estudiante'
-  const { nombre, correo, curso } = req.body;
 
-  if (!correo) {
+  const { name, email, bootcamp } = req.body;
+
+  if (!email) {
     return res.status(400).json({
       error: "el correo es obligatorio",
     });
@@ -76,19 +88,20 @@ router.post("/", (req, res) => {
 
   const nuevoEstudiante: Estudiante = {
     id: estudiantes.length + 1,
-    nombre,
-    correo,
-    curso,
+    nombre: name,
+    correo: email,
+    curso: bootcamp,
   };
 
   estudiantes.push(nuevoEstudiante);
 
   res.status(201).json(nuevoEstudiante);
 });
-
 // actualizar un estudiante
 router.put("/:id", (req, res) => {
+  // #swagger.tags = ['Estudiantes']
   // #swagger.description = 'actualiza un estudiante existente'
+
   const id = Number(req.params.id);
 
   const estudiante = estudiantes.find((estudiante) => estudiante.id === id);
@@ -99,24 +112,25 @@ router.put("/:id", (req, res) => {
     });
   }
 
-  const { nombre, correo, curso } = req.body;
+  const { name, email, bootcamp } = req.body;
 
-  if (nombre !== undefined) {
-    estudiante.nombre = nombre;
+  if (name !== undefined) {
+    estudiante.nombre = name;
   }
 
-  if (correo !== undefined) {
-    estudiante.correo = correo;
+  if (email !== undefined) {
+    estudiante.correo = email;
   }
 
-  if (curso !== undefined) {
-    estudiante.curso = curso;
+  if (bootcamp !== undefined) {
+    estudiante.curso = bootcamp;
   }
 
   res.json(estudiante);
 });
 // eliminar un estudiante
 router.delete("/:id", (req, res) => {
+  // #swagger.tags = ['Estudiantes']
   // #swagger.description = 'elimina un estudiante por su id'
   const id = Number(req.params.id);
 

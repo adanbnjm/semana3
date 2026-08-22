@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/api/status": {
+    "/": {
       "get": {
         "description": "",
         "responses": {
@@ -21,8 +21,24 @@
         }
       }
     },
-    "/api/estudiantes/": {
+    "/api/status": {
       "get": {
+        "tags": [
+          "SERVIDOR"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/students/": {
+      "get": {
+        "tags": [
+          "Estudiantes"
+        ],
         "description": "obtiene la lista de estudiantes o filtra por curso",
         "parameters": [
           {
@@ -38,6 +54,9 @@
         }
       },
       "post": {
+        "tags": [
+          "Estudiantes"
+        ],
         "description": "crea un nuevo estudiante",
         "parameters": [
           {
@@ -46,13 +65,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "nombre": {
+                "name": {
                   "example": "any"
                 },
-                "correo": {
+                "email": {
                   "example": "any"
                 },
-                "curso": {
+                "bootcamp": {
                   "example": "any"
                 }
               }
@@ -69,8 +88,11 @@
         }
       }
     },
-    "/api/estudiantes/{id}": {
+    "/api/students/{id}": {
       "get": {
+        "tags": [
+          "Estudiantes"
+        ],
         "description": "obtiene un estudiante por su id",
         "parameters": [
           {
@@ -90,6 +112,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Estudiantes"
+        ],
         "description": "actualiza un estudiante existente",
         "parameters": [
           {
@@ -104,13 +129,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "nombre": {
+                "name": {
                   "example": "any"
                 },
-                "correo": {
+                "email": {
                   "example": "any"
                 },
-                "curso": {
+                "bootcamp": {
                   "example": "any"
                 }
               }
@@ -127,6 +152,149 @@
         }
       },
       "delete": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "description": "elimina un estudiante por su id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/estudiantes/": {
+      "get": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "description": "obtiene la lista de estudiantes o filtra por curso",
+        "parameters": [
+          {
+            "name": "curso",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "description": "crea un nuevo estudiante",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "bootcamp": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/estudiantes/{id}": {
+      "get": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "description": "obtiene un estudiante por su id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Estudiantes"
+        ],
+        "description": "actualiza un estudiante existente",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "bootcamp": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Estudiantes"
+        ],
         "description": "elimina un estudiante por su id",
         "parameters": [
           {
